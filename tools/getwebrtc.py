@@ -83,7 +83,9 @@ scriptRoot = script_root()
 toolsRoot = scriptRoot
 projRoot = uplevel_dir_of(scriptRoot)
 nativeRoot = os.path.join(projRoot, 'native')
-rtcRev = 4758
+rtcRev = '4758'
+buildArch = 'x64'
+buildConfig = 'release'
 
 # Download depot_tools
 depotToolsPath = os.path.join(toolsRoot, 'depot_tools')
@@ -295,6 +297,23 @@ def copyHeaders():
     with open(revFile, 'w+') as rf:
         rf.write(str(rtcRev))
 
+for i in range(1, len(sys.argv)):
+    arg = sys.argv[i]
+    if not arg.startswith('--'):
+        print('invalidate argument: {}'.format(arg))
+        os.exit(1)
+    kv = arg[2:].split('=')
+    arg_key = kv[0]
+    if arg_key == 'rev':
+        rtcRev = kv[1]
+    elif arg_key == 'arch':
+        buildArch = kv[1]
+    elif arg_key == 'config':
+        buildConfig = kv[1]
+    else:
+        print('invalidate argument: {}'.format(kv[0]))
+        os.exit(1)
+
 # Do downloading
 dlDepotTools()
 
@@ -309,7 +328,4 @@ set_env('GYP_MSVS_OVERRIDE_PATH', 'C:\\Program Files (x86)\\Microsoft Visual Stu
 dlWebRTC()
 syncWebRTC()
 copyHeaders()
-buildWebRTC('x86', 'debug')
-buildWebRTC('x86', 'release')
-buildWebRTC('x64', 'debug')
-buildWebRTC('x64', 'release')
+buildWebRTC(buildArch, buildConfig)
