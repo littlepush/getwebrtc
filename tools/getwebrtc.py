@@ -201,13 +201,13 @@ def buildWebRTC(arch, config):
         'target_cpu=\\"{}\\"'.format(arch),
         'is_debug={}'.format('true' if config == 'debug' else 'false'),
         'is_component_build=false',
-        'is_clang=false',
-        'use_lld=false',
         'treat_warnings_as_errors=false',
         'rtc_include_tests=false',
         'rtc_build_examples=false',
         'use_rtti=false',
-        'rtc_enable_grpc=false',
+        'use_custom_libcxx=false',
+        'enable_iterator_debugging=true',
+        'symbol_level=0',
         'rtc_enable_protobuf=false',
         'rtc_enable_sctp=false',
         'enable_google_benchmarks=false',
@@ -217,12 +217,15 @@ def buildWebRTC(arch, config):
         'rtc_build_tools=false',
         'enable_libaom=true',
         'enable_libaom_decoder=true',
+        'proprietary_codecs=true',
         'rtc_enable_symbol_export=true',
-        'rtc_enable_objc_symbol_export=true'
+        'rtc_enable_objc_symbol_export=true',
+        'rtc_libvpx_build_vp9=true'
     ]
     try:
         do(['gn', 'gen', '../build_{}_{}'.format(arch, config), '--ide=vs', '--args=\"{}\"'.format(' '.join(args))])
         # do(['gn', 'args', '../build_{}_{}'.format(arch, config), '--list'])
+        # os.system('gn args ../build_{}_{} --list'.format(arch, config))
         build_success = (do(['ninja', '-C', '../build_{}_{}'.format(arch, config)]) == 0)
     except:
         os.exit(4)
@@ -319,6 +322,20 @@ for i in range(1, len(sys.argv)):
     else:
         print('invalidate argument: {}'.format(kv[0]))
         os.exit(1)
+
+def kill_child_processes(*args):
+    import psutil
+    current_process = psutil.Process()
+    children = current_process.children(recursive=True)
+    for child in children:
+        os.kill(child.pid, signal.SIGKILL)
+
+import atexit
+import signal
+
+atexit.register(kill_child_processes)
+signal.signal(signal.SIGTERM, kill_child_processes)
+signal.signal(signal.SIGINT, kill_child_processes)
 
 # Do downloading
 dlDepotTools()
