@@ -86,6 +86,8 @@ nativeRoot = os.path.join(projRoot, 'native')
 rtcRev = '4758'
 buildArch = 'x64'
 buildConfig = 'release'
+build = False
+copyHeader = False
 
 # Download depot_tools
 depotToolsPath = os.path.join(toolsRoot, 'depot_tools')
@@ -310,6 +312,10 @@ for i in range(1, len(sys.argv)):
         buildArch = kv[1]
     elif arg_key == 'config':
         buildConfig = kv[1]
+    elif arg_key == 'build':
+        build = True
+    elif arg_key == 'copy-header':
+        copyHeader = True
     else:
         print('invalidate argument: {}'.format(kv[0]))
         os.exit(1)
@@ -327,5 +333,8 @@ set_env('GYP_MSVS_OVERRIDE_PATH', 'C:\\Program Files (x86)\\Microsoft Visual Stu
 
 dlWebRTC()
 syncWebRTC()
-copyHeaders()
-buildWebRTC(buildArch, buildConfig)
+
+if copyHeader:
+    copyHeaders()
+if build:
+    buildWebRTC(buildArch, buildConfig)
