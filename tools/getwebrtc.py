@@ -311,7 +311,7 @@ for i in range(1, len(sys.argv)):
     elif arg_key == 'arch':
         buildArch = kv[1]
     elif arg_key == 'config':
-        buildConfig = kv[1]
+        buildConfig = kv[1].lower()
     elif arg_key == 'build':
         build = True
     elif arg_key == 'copy-header':
