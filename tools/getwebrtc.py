@@ -220,7 +220,8 @@ def buildWebRTC(arch, config):
         'proprietary_codecs=true',
         'rtc_enable_symbol_export=true',
         'rtc_enable_objc_symbol_export=true',
-        'rtc_libvpx_build_vp9=true'
+        'rtc_libvpx_build_vp9=true',
+        'rtc_enable_win_wgc=true'
     ]
     try:
         do(['gn', 'gen', '../build_{}_{}'.format(arch, config), '--ide=vs', '--args=\"{}\"'.format(' '.join(args))])
