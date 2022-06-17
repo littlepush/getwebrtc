@@ -204,9 +204,8 @@ def buildWebRTC(arch, config):
         'treat_warnings_as_errors=false',
         'rtc_include_tests=false',
         'rtc_build_examples=false',
-        'use_rtti=false',
+        'use_rtti=true',
         'enable_iterator_debugging=true',
-        'symbol_level=0',
         'rtc_enable_protobuf=false',
         'rtc_enable_sctp=false',
         'enable_google_benchmarks=false',
@@ -218,7 +217,8 @@ def buildWebRTC(arch, config):
         'enable_libaom_decoder=true',
         'proprietary_codecs=true',
         'rtc_libvpx_build_vp9=true',
-        'rtc_enable_win_wgc=true'
+        'rtc_enable_win_wgc=true',
+        'use_custom_libcxx=false'
     ]
     try:
         do(['gn', 'gen', '../build_{}_{}'.format(arch, config), '--ide=vs', '--args=\"{}\"'.format(' '.join(args))])
