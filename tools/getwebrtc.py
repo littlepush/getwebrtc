@@ -82,8 +82,8 @@ def gitCheckout(url, path, commit='main', branch='main', deep_clone=False):
 scriptRoot = script_root()
 toolsRoot = scriptRoot
 projRoot = uplevel_dir_of(scriptRoot)
-nativeRoot = os.path.join(projRoot, 'native')
 rtcRev = '4758'
+nativeRoot = os.path.join(projRoot, 'native_{}'.format(rtcRev))
 buildArch = 'x64'
 buildConfig = 'release'
 build = False
@@ -205,7 +205,6 @@ def buildWebRTC(arch, config):
         'rtc_include_tests=false',
         'rtc_build_examples=false',
         'use_rtti=false',
-        'use_custom_libcxx=false',
         'enable_iterator_debugging=true',
         'symbol_level=0',
         'rtc_enable_protobuf=false',
@@ -323,6 +322,8 @@ for i in range(1, len(sys.argv)):
     else:
         print('invalidate argument: {}'.format(kv[0]))
         os.exit(1)
+
+nativeRoot = os.path.join(projRoot, 'native_{}'.format(rtcRev))
 
 def kill_child_processes(*args):
     import psutil
