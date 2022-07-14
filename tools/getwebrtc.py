@@ -216,6 +216,8 @@ def buildWebRTC(arch, config):
         'enable_libaom=true',
         'enable_libaom_decoder=true',
         'proprietary_codecs=true',
+        'rtc_use_h264=true',
+        'ffmpeg_branding=\"Chrome\"',
         'rtc_libvpx_build_vp9=true',
         'rtc_enable_win_wgc=true',
         'use_custom_libcxx=false'
