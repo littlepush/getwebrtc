@@ -1,4 +1,5 @@
 native*/build_*
 native*/src
 native*/.*
+native_*
 lib/x*
