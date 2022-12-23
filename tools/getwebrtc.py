@@ -220,7 +220,8 @@ def buildWebRTC(arch, config):
         'ffmpeg_branding=\\"Chrome\\"',
         'rtc_libvpx_build_vp9=true',
         'rtc_enable_win_wgc=true',
-        'use_custom_libcxx=false'
+        'use_custom_libcxx=false',
+        'rtc_include_audio_device_module_from_input_and_output=true'
     ]
     try:
         do(['gn', 'gen', '../build_{}_{}'.format(arch, config), '--ide=vs', '--args=\"{}\"'.format(' '.join(args))])
